@@ -4,7 +4,7 @@ sudo useradd --no-create-home prometheus
 sudo mkdir /etc/prometheus
 sudo mkdir /var/lib/prometheus
 
-PROMETHEUS_VERSION=2.23.0
+PROMETHEUS_VERSION=2.33.3
 PROMETHEUS_PLATFORM=linux-amd64
 PROMETHEUS_FULL_NAME=prometheus-$PROMETHEUS_VERSION.$PROMETHEUS_PLATFORM
 
