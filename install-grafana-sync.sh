@@ -15,3 +15,5 @@ EXTRACTED_API_KEY=$(curl 'http://localhost:3000/api/auth/keys' -XPOST -uadmin:ad
 echo "Extracted API KEY $EXTRACTED_API_KEY"
 
 export GRAFANA_API_KEY="$EXTRACTED_API_KEY"
+
+echo "GRAFANA_API_KEY env variable has been set"
