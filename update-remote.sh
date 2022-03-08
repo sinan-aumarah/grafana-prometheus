@@ -5,7 +5,7 @@
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 SYNC_DIR="$SCRIPT_DIR/sync_directory"
-TARGET_BRANCH="rsync"
+TARGET_BRANCH="auto-sync"
 
 current_timestamp() {
   date +"at %H:%M:%S on %d/%m/%Y"
