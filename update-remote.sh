@@ -3,7 +3,8 @@
 ## Run in crontab to run every midnight
 ## 00 00 * * * path/to/update-remote.sh
 
-SYNC_DIR="sync_directory"
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+SYNC_DIR="$SCRIPT_DIR/sync_directory"
 TARGET_BRANCH="rsync"
 
 current_timestamp() {
@@ -16,7 +17,7 @@ then
   git clone -b $TARGET_BRANCH $DASHBOARDS_GIT_REPO $SYNC_DIR
 fi
 
-grafana-sync pull-dashboards --apikey=$GRAFANA_API_KEY --directory="$SYNC_DIR" --url http://127.0.0.1:3000
+"$SCRIPT_DIR"/grafana-sync pull-dashboards --apikey=$GRAFANA_API_KEY --directory="$SYNC_DIR" --url http://127.0.0.1:3000
 
 cd $SYNC_DIR || exit
 git add .
