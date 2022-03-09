@@ -9,9 +9,17 @@ API_KEY=$GRAFANA_API_KEY
 TARGET_DASHBOARDS_FOLDER="$SCRIPT_DIR/dashboards"
 TARGET_GIT_BRANCH="auto-sync"
 GRAFANA_URL="http://127.0.0.1:3000"
+LOG_FILE="$SCRIPT_DIR/remote.log"
 
 current_timestamp() {
   date +"at %H:%M:%S on %d/%m/%Y"
+}
+
+log() {
+   timestamp=$(date "+%Y-%m-%d %H:%M:%S %Z")
+
+   echo $1
+   printf "[%s] $1\n" "$timestamp" >> "$LOG_FILE"
 }
 
 export_dashboards() {
@@ -30,7 +38,7 @@ export_dashboards() {
     NUMBER_OF_GRAFANA_DASHBOARDS=$[$NUMBER_OF_GRAFANA_DASHBOARDS + 1]
   done
 
-  echo "Exporting done. Saved $NUMBER_OF_GRAFANA_DASHBOARDS dashboards"
+  log "Exporting done. Saved $NUMBER_OF_GRAFANA_DASHBOARDS dashboards"
 }
 
 clone_remote_repo_if_not_present() {
