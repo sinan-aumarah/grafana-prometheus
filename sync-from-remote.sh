@@ -5,10 +5,8 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 ## USAGE: nohup ./sync-from-remote.sh > sync.log 2>&1 &
 TARGET_BRANCH="auto-sync"
 SYNC_DIR="$SCRIPT_DIR/remote-sync-dashboards"
-SYNC_INTERVAL_IN_SECONDS=60
 TARGET_HOST="127.0.0.1:3000"
-
-git clone -b $TARGET_BRANCH $DASHBOARDS_GIT_REPO $SYNC_DIR
+SYNC_INTERVAL_IN_SECONDS=60
 
 import_dashboards() {
   
@@ -43,11 +41,27 @@ import_dashboards() {
 
 #### START OF SCRIPT EXECUTION #####
 
+git clone -b $TARGET_BRANCH $DASHBOARDS_GIT_REPO $SYNC_DIR
+
+cd "$SYNC_DIR" || exit
+
 while true
 do
-  git -C $SYNC_DIR pull
+  git fetch
+  UPSTREAM=${1:-'@{u}'}
+  LOCAL=$(git rev-parse @)
+  REMOTE=$(git rev-parse "$UPSTREAM")
+  BASE=$(git merge-base @ "$UPSTREAM")
 
-  import_dashboards
+  if [ $LOCAL = $REMOTE ]; then
+      echo "No changes detected, Skipping import."
+  elif [ $LOCAL = $BASE ]; then
+      echo "Remote branch has been updated. Importing in progress..."
+
+      git -C $SYNC_DIR pull
+
+      import_dashboards
+  fi
 
   sleep $SYNC_INTERVAL_IN_SECONDS
 done
