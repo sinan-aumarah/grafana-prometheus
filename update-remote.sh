@@ -1,5 +1,8 @@
 #!/bin/sh
 
+## Run in crontab to run every midnight
+## 00 00 * * * path/to/update-remote.sh
+
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 API_KEY=$GRAFANA_API_KEY
