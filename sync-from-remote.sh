@@ -5,7 +5,7 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 ## USAGE: nohup ./sync-from-remote.sh > sync.log 2>&1 &
 TARGET_BRANCH="auto-sync"
 SYNC_DIR="$SCRIPT_DIR/remote-sync-dashboards"
-SYNC_INTERVAL_IN_SECONDS=30
+SYNC_INTERVAL_IN_SECONDS=60
 TARGET_HOST="127.0.0.1:3000"
 
 git clone -b $TARGET_BRANCH $DASHBOARDS_GIT_REPO $SYNC_DIR
