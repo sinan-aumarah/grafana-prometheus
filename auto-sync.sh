@@ -7,9 +7,9 @@ SYNC_INTERVAL_IN_SECONDS=60
 while true
 do
 
-  ./sync-from-remote.sh
-
   ./update-remote.sh
+
+  ./sync-from-remote.sh
 
   sleep $SYNC_INTERVAL_IN_SECONDS
 done
