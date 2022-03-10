@@ -9,7 +9,7 @@ API_KEY=$GRAFANA_API_KEY
 TARGET_DASHBOARDS_FOLDER="$SCRIPT_DIR/dashboards"
 TARGET_GIT_BRANCH="auto-sync"
 GRAFANA_URL="http://127.0.0.1:3000"
-LOG_FILE="$SCRIPT_DIR/remote.log"
+LOG_FILE="$SCRIPT_DIR/remote-push.log"
 
 current_timestamp() {
   date +"at %H:%M:%S on %d/%m/%Y"
@@ -46,7 +46,6 @@ clone_remote_repo_if_not_present() {
   if [ ! -d "$TARGET_DASHBOARDS_FOLDER" ]
   then
     git clone -b "$TARGET_GIT_BRANCH" "$DASHBOARDS_GIT_REPO" "$TARGET_DASHBOARDS_FOLDER"
-    git remote -v
   fi
 }
 
