@@ -7,7 +7,7 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 API_KEY=$GRAFANA_API_KEY
 TARGET_DASHBOARDS_FOLDER="$SCRIPT_DIR/dashboards"
-TARGET_GIT_BRANCH="auto-sync"
+TARGET_GIT_BRANCH="main"
 GRAFANA_URL="http://127.0.0.1:3000"
 LOG_FILE="$SCRIPT_DIR/remote-push.log"
 
