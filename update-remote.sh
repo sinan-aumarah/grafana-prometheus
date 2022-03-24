@@ -25,11 +25,17 @@ log() {
 export_dashboards() {
   NUMBER_OF_GRAFANA_DASHBOARDS=0
   for dash in $(curl -sSL -k -H "Authorization: Bearer ${API_KEY}" "${GRAFANA_URL}/api/search?query=&" | jq -r '.[] | select(.type == "dash-db") | .uid'); do
-    curl -sSL -k -H "Authorization: Bearer ${API_KEY}" "${GRAFANA_URL}/api/dashboards/uid/$dash" | jq -r . >${TARGET_DASHBOARDS_FOLDER}/${dash}.json
+    temp_file=${TARGET_DASHBOARDS_FOLDER}/${dash}-temp.json
+
+    curl -sSL -k -H "Authorization: Bearer ${API_KEY}" "${GRAFANA_URL}/api/dashboards/uid/$dash" | jq -r . > "$temp_file"
 
     # rename the exported dashboard to use slug rather than dashboard id
-    slug=$(cat ${TARGET_DASHBOARDS_FOLDER}/${dash}.json | jq -r '.meta.slug')
-    mv ${TARGET_DASHBOARDS_FOLDER}/${dash}.json "${TARGET_DASHBOARDS_FOLDER}/${slug}.json"
+    slug=$(cat "$temp_file" | jq -r '.meta.slug')
+
+    # Remove metadata blob hack - More info https://github.com/grafana/grafana/issues/13029
+    cat "$temp_file" | jq '.dashboard.id = null' | jq '.dashboard' > ${TARGET_DASHBOARDS_FOLDER}/${slug}.json
+
+    rm -f "$temp_file"
 
     # if we want to save the dashboards with their corresponding folder name
     #folder=$(cat ${TARGET_DASHBOARDS_FOLDER}/${dash}.json | jq -r '.meta.folderTitle')
